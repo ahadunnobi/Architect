@@ -28,3 +28,7 @@ nav div a{
     border-radius: 8px;
     border: none;
 }
+button:hover {
+  background-color: #04AA6D;
+  color: rgb(255, 0, 0);
+}
