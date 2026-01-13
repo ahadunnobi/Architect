@@ -7,6 +7,9 @@
     --text-light-gray: #727272;
     --bg-light: rgba(255, 144, 14, 0.1);
     --white: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 /* Base Styles */
@@ -14,6 +17,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 .work-sans-font {
@@ -21,6 +25,7 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    color: var(--text-color);
 }
 
 .display-flex {
@@ -31,12 +36,12 @@
     color: var(--primary-color);
 }
 
-.text-gray {
-    color: var(--text-color);
+.text-center {
+    text-align: center;
 }
 
-.text-light-gray {
-    color: var(--text-light-gray);
+.mb-50 {
+    margin-bottom: 50px;
 }
 
 .bg-light {
@@ -52,11 +57,14 @@
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 144, 14, 0.3);
 }
 
 .btn-primary:hover {
     background-color: #e6820c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 144, 14, 0.4);
 }
 
 .section-title {
@@ -72,15 +80,69 @@
     padding: 0 20px;
 }
 
-main > section {
+main>section {
     margin-top: 130px;
     margin-bottom: 130px;
+    /* opacity: 0; */
+    /* Only enable if JS intersection observer was used, sticking to CSS hover/load animations */
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.zoom-in {
+    animation: zoomIn 1.2s ease-out forwards;
+}
+
+.hover-scale {
+    transition: transform 0.4s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.03);
+}
+
+/* Glassmorphism */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
 /* Header & Navbar */
 header {
     background-color: var(--bg-light);
     padding: 50px 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .navbar {
@@ -111,11 +173,15 @@ header {
     text-decoration: none;
     font-weight: 500;
     font-size: 1rem;
+    color: var(--text-color);
     transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 .nav-link:hover {
     color: var(--primary-color);
+    background: rgba(255, 144, 14, 0.1);
 }
 
 /* Banner Section */
@@ -136,16 +202,19 @@ header {
     font-size: 4rem;
     margin-bottom: 30px;
     color: #131313;
+    line-height: 1.2;
 }
 
 .banner-description {
     margin-bottom: 30px;
-    line-height: 26px;
+    line-height: 28px;
+    font-size: 1.1rem;
 }
 
 .banner-image {
     width: 100%;
     border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Teams Section */
@@ -167,6 +236,7 @@ header {
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .our-features {
@@ -181,6 +251,62 @@ header {
 
 #quick-list {
     font-weight: 500;
+}
+
+/* Projects Section */
+.projects {
+    padding-top: 50px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.project-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 400px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+}
+
+.project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover img {
+    transform: scale(1.1);
+}
+
+.project-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-info {
+    transform: translateY(0);
+}
+
+.project-info h4 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
 }
 
 /* Features Section */
@@ -203,11 +329,14 @@ header {
     border-radius: 8px;
     box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.06);
     margin-bottom: 20px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-left: 3px solid var(--primary-color);
 }
 
 .feature-title {
@@ -234,6 +363,17 @@ header {
     padding: 40px;
     text-align: center;
     border-radius: 8px;
+    background-color: var(--primary-color);
+    /* Fallback */
+    color: white;
+    box-shadow: 0 10px 30px rgba(255, 144, 14, 0.4);
+}
+
+/* Override glass effect for this specific badge to keep brand color but add blur if wanted, 
+   or keep solid for readability. Let's make it a solid primary block with shadow as per original design but enhanced. */
+#experience-badge.glass-effect {
+    background: rgba(255, 144, 14, 0.9);
+    border: none;
 }
 
 #experience-year {
@@ -268,11 +408,28 @@ header {
     justify-content: center;
     height: 240px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
 }
 
 .fact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(255, 144, 14, 0.2);
+    transform: translateY(-10px);
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 40px rgba(255, 144, 14, 0.3);
+}
+
+.fact-card:hover .fact-number,
+.fact-card:hover .fact-name {
+    color: white;
+}
+
+.fact-card img {
+    transition: filter 0.3s ease;
+}
+
+.fact-card:hover img {
+    filter: brightness(0) invert(1);
 }
 
 .fact-number {
@@ -280,11 +437,14 @@ header {
     font-weight: 600;
     margin: 15px 0 10px 0;
     color: #424242;
+    transition: color 0.3s ease;
 }
 
 .fact-name {
     font-size: 1.25rem;
     font-weight: 600;
+    color: var(--text-light-gray);
+    transition: color 0.3s ease;
 }
 
 /* Sponsors Section */
@@ -300,30 +460,75 @@ header {
     align-items: center;
     justify-items: center;
     gap: 50px;
+    padding: 40px 0;
 }
 
 .sponsor-companies img {
     filter: grayscale(100%);
+    opacity: 0.6;
     max-width: 120px;
-    transition: filter 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .sponsor-companies img:hover {
     filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* Footer */
 footer {
-    padding: 100px 0;
-    text-align: center;
+    padding: 80px 0 40px;
     margin-top: 100px;
+}
+
+.footer-content {
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.footer-brand p {
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+.footer-links h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #131313;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: var(--text-light-gray);
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+    padding-left: 5px;
+}
+
+.copyright {
+    font-size: 0.9rem;
 }
 
 /* Responsive Media Queries */
 
 /* Tablet & Mobile */
 @media screen and (max-width: 992px) {
-    main > section {
+    main>section {
         margin-top: 80px;
         margin-bottom: 80px;
     }
@@ -331,14 +536,15 @@ footer {
     .banner-title {
         font-size: 3rem;
     }
-    
-    .teams, .features {
+
+    .teams,
+    .features {
         flex-direction: column;
         gap: 50px;
     }
-    
-    .our-features, 
-    .feature-content, 
+
+    .our-features,
+    .feature-content,
     .team-img-container,
     .featured-architect {
         width: 100%;
@@ -351,27 +557,38 @@ footer {
 
     .our-features {
         margin-left: 0;
-        text-align: center; /* Optional: Center align on mobile */
+        text-align: center;
     }
-    
+
     #experience-badge {
         position: static;
         margin: 20px auto 0 auto;
         width: fit-content;
         transform: none;
     }
-    
+
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .sponsor-companies {
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+        align-items: center;
     }
 }
 
 /* Mobile Small */
 @media screen and (max-width: 576px) {
     .navbar {
-       flex-direction: column;
-       gap: 20px;
+        flex-direction: column;
+        gap: 20px;
     }
 
     .nav-links {
@@ -390,11 +607,15 @@ footer {
     .team-img-container {
         grid-template-columns: 1fr;
     }
-    
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
     .facts-container {
         grid-template-columns: 1fr;
     }
-    
+
     .sponsor-companies {
         grid-template-columns: repeat(2, 1fr);
     }
